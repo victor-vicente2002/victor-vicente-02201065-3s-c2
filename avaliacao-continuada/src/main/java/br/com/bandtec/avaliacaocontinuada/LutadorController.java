@@ -54,4 +54,14 @@ public class LutadorController {
             return ResponseEntity.status(201).build();
         }
     }
+
+    @PostMapping("/golpe")
+    public ResponseEntity addGolpe(@RequestBody Golpe golpe){
+        Lutador lutadorbate = repository.findLutadorById(golpe.getIdLutadorBate());
+        Lutador lutadorApanha = repository.findLutadorById(golpe.getIdLutadorApanha());
+
+        lutadorApanha.setVida(lutadorApanha.getVida()-lutadorbate.getForcaGolpe());
+        repository.save(lutadorApanha);
+        return ResponseEntity.status(201).body("deu certo");
+    }
 }
