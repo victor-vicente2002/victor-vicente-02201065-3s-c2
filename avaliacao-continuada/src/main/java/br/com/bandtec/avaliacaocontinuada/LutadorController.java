@@ -64,4 +64,14 @@ public class LutadorController {
         repository.save(lutadorApanha);
         return ResponseEntity.status(201).body("deu certo");
     }
+
+    @GetMapping("/mortos")
+    public ResponseEntity getMortos(){
+        List<Lutador> mortos = repository.getMortos();
+        if (mortos.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }else{
+            return ResponseEntity.status(200).body(mortos);
+        }
+    }
 }
