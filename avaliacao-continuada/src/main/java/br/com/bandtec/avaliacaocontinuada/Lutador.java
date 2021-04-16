@@ -20,7 +20,7 @@ public class Lutador {
 
     private int concentracoesRealizadas = 0;
 
-    private boolean vivo = true;
+    private boolean vivo = vida<=0? false : true;
 
     public Integer getId() {
         return id;

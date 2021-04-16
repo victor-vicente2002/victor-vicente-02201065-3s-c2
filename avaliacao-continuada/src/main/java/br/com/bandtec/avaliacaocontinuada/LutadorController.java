@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/lutadores")
@@ -22,11 +24,34 @@ public class LutadorController {
 
     @GetMapping
     public ResponseEntity getLutadores(){
-        List<Lutador> lutadores = repository.findAll();
+        List<Lutador> lutadores = repository.findAllByVida();
         if (lutadores.isEmpty()){
             return ResponseEntity.status(204).build();
         }else{
             return ResponseEntity.status(200).body(lutadores);
+        }
+    }
+
+    @GetMapping("/contagem-vivos")
+    public ResponseEntity getLutadoresVivos() {
+        List<Lutador> lutadoresVivos = repository.findAllByVivo(true);
+        if (lutadoresVivos.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }else{
+            return ResponseEntity.status(200).body(lutadoresVivos.size());
+        }
+    }
+
+    @PostMapping("/{id}/concentrar")
+    public ResponseEntity addConcentracao(@PathVariable int id){
+        Lutador lutador = repository.findLutadorById(id);
+        if (lutador.getConcentracoesRealizadas() >= 3){
+            return ResponseEntity.status(400).body("Lutador já se concentrou 3 vezes!");
+        }else{
+            lutador.setConcentracoesRealizadas(lutador.getConcentracoesRealizadas()+1);
+            lutador.setVida(lutador.getVida()*1.15);
+            repository.save(lutador);
+            return ResponseEntity.status(201).build();
         }
     }
 }

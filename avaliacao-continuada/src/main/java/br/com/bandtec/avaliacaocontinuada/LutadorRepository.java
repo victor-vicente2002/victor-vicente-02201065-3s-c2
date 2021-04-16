@@ -7,6 +7,10 @@ import java.util.List;
 
 public interface LutadorRepository extends JpaRepository<Lutador, Integer> {
 
-    //    @Query("select vida from Lutador ORDER BY vida desc")
-//    List<Lutador> findAllByVida();
+    List<Lutador> findAllByVivo(boolean vivo);
+
+    @Query("from Lutador ORDER BY forcaGolpe desc")
+    List<Lutador> findAllByVida();
+
+    Lutador findLutadorById(int id);
 }
