@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,8 +62,16 @@ public class LutadorController {
         Lutador lutadorApanha = repository.findLutadorById(golpe.getIdLutadorApanha());
 
         lutadorApanha.setVida(lutadorApanha.getVida()-lutadorbate.getForcaGolpe());
+        if (lutadorApanha.getVida()<= 0){
+            lutadorApanha.setVida(0.0);
+            lutadorApanha.setVivo(false);
+        }
         repository.save(lutadorApanha);
-        return ResponseEntity.status(201).body("deu certo");
+
+        List<Lutador> lutadores = new ArrayList<>();
+        lutadores.add(lutadorbate);
+        lutadores.add(lutadorApanha);
+        return ResponseEntity.status(201).body(lutadores);
     }
 
     @GetMapping("/mortos")

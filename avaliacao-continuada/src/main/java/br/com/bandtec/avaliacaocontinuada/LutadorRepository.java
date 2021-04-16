@@ -2,6 +2,7 @@ package br.com.bandtec.avaliacaocontinuada;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -16,6 +17,5 @@ public interface LutadorRepository extends JpaRepository<Lutador, Integer> {
 
     @Query("from Lutador where vida <= 0")
     List<Lutador> getMortos();
-//    @Query("from Lutador where ")
-//    List<Lutador> getDoisLutadores
+
 }
